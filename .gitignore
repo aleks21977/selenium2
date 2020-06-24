@@ -17,7 +17,6 @@ gradle-app.setting
 *.iml
 *.log
 *.class
-build.gradle
 gradlew
 gradlew.bat
 settings.gradle
