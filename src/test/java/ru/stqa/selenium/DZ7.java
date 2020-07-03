@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class DZ7 extends TestBase{
+public class DZ7 extends TestBase {
 
     @Test
     public void dz7Test() {
