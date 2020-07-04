@@ -11,80 +11,109 @@ public class DZ10 extends TestBase {
     @Test
     public void testNameGoods() {
         goToLitecart();
-        String NameGoodsFirst = driver.findElement(By.cssSelector("div#box-campaigns li:first-child div.name")).getText();
+        String NameGoodsFirst = getText("div#box-campaigns li:first-child div.name");
         goToGoodsPage();
-        String NameGoodsSecond = driver.findElement(By.cssSelector("h1.title")).getText();
+        String NameGoodsSecond = getText("h1.title");
         assertEquals(NameGoodsFirst, NameGoodsSecond);
     }
 
     @Test
     public void testPriceGoods() {
         goToLitecart();
-        String RegularPriceFirst = driver.findElement(By.cssSelector("div#box-campaigns li:first-child s.regular-price")).getText();
-        String CampaignPriceFirst = driver.findElement(By.cssSelector("div#box-campaigns li:first-child strong.campaign-price")).getText();
+        String RegularPriceFirst = getText("div#box-campaigns li:first-child s.regular-price");
+        String CampaignPriceFirst = getText("div#box-campaigns li:first-child strong.campaign-price");
         goToGoodsPage();
-        String RegularPriceSecond = driver.findElement(By.cssSelector("s.regular-price")).getText();
-        String CampaignPriceSecond = driver.findElement(By.cssSelector("strong.campaign-price")).getText();
+        String RegularPriceSecond = getText("s.regular-price");
+        String CampaignPriceSecond = getText("strong.campaign-price");
         assertEquals(RegularPriceFirst, RegularPriceSecond);
         assertEquals(CampaignPriceFirst, CampaignPriceSecond);
     }
 
     @Test
-    public void testCampaignPrice() {
+    public void testRegularPrice() {
         goToLitecart();
-
         //проверка что цена перечеркнута
-        String OuterHTML = driver.findElement(By.cssSelector("div#box-campaigns div.price-wrapper")).getAttribute("outerHTML");
+        String OuterHTML = getOuterHTML("div#box-campaigns div.price-wrapper");
         assertTrue(OuterHTML.indexOf("</s>") != -1);
 
         //проверка что цена серого цвета
-        String Color = driver.findElement(By.cssSelector("div#box-campaigns li:first-child s.regular-price")).getCssValue("color");
-        String[] hexValue = Color.replace("rgba(", "").replace(")", "").split(",");
-        int hexValue1=Integer.parseInt(hexValue[0]);
-        hexValue[1] = hexValue[1].trim();
-        int hexValue2=Integer.parseInt(hexValue[1]);
-        hexValue[2] = hexValue[2].trim();
-        int hexValue3=Integer.parseInt(hexValue[2]);
-        String actualColor = String.format("#%02x%02x%02x", hexValue1, hexValue2, hexValue3);
+        String Color = getColor("div#box-campaigns li:first-child s.regular-price");
+        String[] hexValue = colorReplace(Color);
+        String actualColor = hexValue(hexValue);
         assertEquals("#777777", actualColor);
     }
 
     @Test
-    public void testRegularPrice() {
+    public void testCampaignPrice() {
         goToLitecart();
-
         //проверка что цена жирная
-        String OuterHTMLFirst = driver.findElement(By.cssSelector("div#box-campaigns div.price-wrapper")).getAttribute("outerHTML");
+        String OuterHTMLFirst = getOuterHTML("div#box-campaigns div.price-wrapper");
         assertTrue(OuterHTMLFirst.indexOf("</strong>") != -1);
-
         //проверка что цена красного цвета
-        String ColorFirst = driver.findElement(By.cssSelector("div#box-campaigns li:first-child strong.campaign-price")).getCssValue("color");
-        String[] hexValueFirst = ColorFirst.replace("rgba(", "").replace(")", "").split(",");
-        int hexValue1First =Integer.parseInt(hexValueFirst[0]);
-        hexValueFirst[1] = hexValueFirst[1].trim();
-        int hexValue2First=Integer.parseInt(hexValueFirst[1]);
-        hexValueFirst[2] = hexValueFirst[2].trim();
-        int hexValue3First=Integer.parseInt(hexValueFirst[2]);
-        String actualColorFirst = String.format("#%02x%02x%02x", hexValue1First, hexValue2First, hexValue3First);
+        String ColorFirst = getColor("div#box-campaigns li:first-child strong.campaign-price");
+        String[] hexValueFirst = colorReplace(ColorFirst);
+        String actualColorFirst = hexValue(hexValueFirst);
         assertEquals("#cc0000", actualColorFirst);
 
         goToGoodsPage();
-
         //проверка что цена жирная
-        String OuterHTML = driver.findElement(By.cssSelector("div.information div.price-wrapper")).getAttribute("outerHTML");
+        String OuterHTML = getOuterHTML("div.information div.price-wrapper");
         assertTrue(OuterHTML.indexOf("</strong>") != -1);
-
         //проверка что цена красного цвета
-        String Color = driver.findElement(By.cssSelector("strong.campaign-price")).getCssValue("color");
-        String[] hexValue = Color.replace("rgba(", "").replace(")", "").split(",");
-        int hexValue1=Integer.parseInt(hexValue[0]);
-        hexValue[1] = hexValue[1].trim();
-        int hexValue2=Integer.parseInt(hexValue[1]);
-        hexValue[2] = hexValue[2].trim();
-        int hexValue3=Integer.parseInt(hexValue[2]);
-        String actualColor = String.format("#%02x%02x%02x", hexValue1, hexValue2, hexValue3);
+        String Color = getColor("strong.campaign-price");
+        String[] hexValue = colorReplace(Color);
+        String actualColor = hexValue(hexValue);
         assertEquals("#cc0000", actualColor);
+    }
 
+    @Test
+    public void testLargePrice() {
+        goToLitecart();
+        String getTextSizeRegular = driver.findElement(By.cssSelector("div#box-campaigns li:first-child s.regular-price")).getCssValue("font-size");
+        Float TextSizeRegular = Float.parseFloat(getTextSizeRegular.replace("px", ""));
+        String getTextSizeCampaign = driver.findElement(By.cssSelector("div#box-campaigns li:first-child strong.campaign-price")).getCssValue("font-size");
+        Float TextSizeCampaign = Float.parseFloat(getTextSizeCampaign.replace("px", ""));
+        assertTrue(TextSizeRegular < TextSizeCampaign);
+
+        goToGoodsPage();
+        String getTextSizeRegularSecond = driver.findElement(By.cssSelector("s.regular-price")).getCssValue("font-size");
+        Float TextSizeRegularSecond = Float.parseFloat(getTextSizeRegularSecond.replace("px", ""));
+        String getTextSizeCampaignSecond = driver.findElement(By.cssSelector("strong.campaign-price")).getCssValue("font-size");
+        Float TextSizeCampaignSecond = Float.parseFloat(getTextSizeCampaignSecond.replace("px", ""));
+        assertTrue(TextSizeRegularSecond < TextSizeCampaignSecond);
+
+
+    }
+
+
+    private String hexValue(String[] hexValue) {
+        int hexValue1 = parseInt(0, hexValue);
+        hexValue[1] = hexValue[1].trim();
+        int hexValue2 = parseInt(1, hexValue);
+        hexValue[2] = hexValue[2].trim();
+        int hexValue3 = parseInt(2, hexValue);
+        String actualColorSecond = String.format("#%02x%02x%02x", hexValue1, hexValue2, hexValue3);
+        return actualColorSecond;
+    }
+
+    private String getText(String s) {
+        return driver.findElement(By.cssSelector(s)).getText();
+    }
+
+    private String[] colorReplace(String color) {
+        return color.replace("rgb(", "").replace("rgba(", "").replace(")", "").split(",");
+    }
+
+    private String getColor(String s) {
+        return driver.findElement(By.cssSelector(s)).getCssValue("color");
+    }
+
+    private int parseInt(int i, String[] hexValue) {
+        return Integer.parseInt(hexValue[i]);
+    }
+
+    private String getOuterHTML(String Selector) {
+        return driver.findElement(By.cssSelector(Selector)).getAttribute("outerHTML");
     }
 
     private void goToGoodsPage() {
