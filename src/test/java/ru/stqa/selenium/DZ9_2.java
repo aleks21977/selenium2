@@ -25,7 +25,7 @@ public class DZ9_2 extends TestBase {
         for (int i = 1; i < CountCountry; i++) {
             String NamesCity = driver.findElement(By.xpath("//tr[contains(@class,'row')][" + i + "]//a[not(@title='Edit')]")).getText();
             System.out.println(NamesCity);
-            //try{Thread.sleep(500);}  catch (Exception e){}//пауза
+            try{Thread.sleep(500);}  catch (Exception e){}//пауза
             driver.findElement(By.xpath("//a[contains(.,'" + NamesCity + "')]")).click();
 
             List<WebElement> NamesZonesCountry = driver.findElements(By.xpath("//option[contains(.,'-- All Zones --')]/../option[@selected='selected']"));
