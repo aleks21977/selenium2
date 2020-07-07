@@ -57,6 +57,7 @@ public class DZ10 extends TestBase {
 
         goToGoodsPage();
         //проверка что цена жирная
+        try{Thread.sleep(2000);}  catch (Exception e){}//пауза
         String OuterHTML = getOuterHTML("div.information div.price-wrapper");
         assertTrue(OuterHTML.indexOf("</strong>") != -1);
         //проверка что цена красного цвета
