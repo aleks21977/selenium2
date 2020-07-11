@@ -17,6 +17,7 @@ public class TestBase {
 
     public WebDriver driver;
     public WebDriverWait wait;
+    public int waitTime = 20;
 
     public boolean isElementPresent (By locator) {
         try {
@@ -36,11 +37,20 @@ public class TestBase {
         }
     }
 
+    public boolean areElementsNotPresent (By locator) {
+        try {
+            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+            return driver.findElements(locator).size() > 0;
+        } finally {
+            driver.manage().timeouts().implicitlyWait(waitTime, TimeUnit.SECONDS);
+        }
+    }
+
     @Before
     public void start() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 2);
+        driver.manage().timeouts().implicitlyWait(waitTime, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, waitTime);
     }
 
 
