@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -17,7 +18,7 @@ public class TestBase {
 
     public WebDriver driver;
     public WebDriverWait wait;
-    public int waitTime = 20;
+    public int waitTime = 3;
 
     public boolean isElementPresent (By locator) {
         try {

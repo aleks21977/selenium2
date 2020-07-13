@@ -18,6 +18,7 @@ public class DZ7 extends TestBase {
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
         driver.findElement(By.name("login")).click();
+        try{Thread.sleep(500);}  catch (Exception e){}//пауза
         List<WebElement> MenuItems = driver.findElements(By.cssSelector("span.name"));
         List<String> NamesItems = new ArrayList<String>();
 
@@ -28,6 +29,7 @@ public class DZ7 extends TestBase {
 
         for (String NameItem : NamesItems) {
             driver.findElement(By.xpath("//span[text()[contains(.,'" + NameItem + "')]]")).click();
+            try{Thread.sleep(500);}  catch (Exception e){}//пауза
             boolean ElementsPresent = areElementsPresent(By.cssSelector("li#app- li"));
 
             if (ElementsPresent) {
