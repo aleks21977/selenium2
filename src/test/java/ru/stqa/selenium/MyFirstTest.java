@@ -21,28 +21,18 @@ import java.util.concurrent.TimeUnit;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 
-public class MyFirstTest {
+public class MyFirstTest extends TestBase {
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+//    private WebDriver driver;
+//    private WebDriverWait wait;
 
-    @Before
-    public void start() {
-        FirefoxOptions options = new FirefoxOptions().setLegacy(true);
-        options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Mozilla Firefox ESR\\firefox.exe")));
-        WebDriver driver = new FirefoxDriver(options);
-
-
-//        DesiredCapabilities caps = new DesiredCapabilities();
-//        //caps.setCapability(FirefoxDriver.MARIONETTE, false);
-//        WebDriver driver = new FirefoxDriver(
-//                new FirefoxBinary(new File("C:\\Program Files\\Mozilla Firefox ESR\\firefox.exe")),
-//                new FirefoxProfile(), caps);
-//        System.out.println(((HasCapabilities) driver).getCapabilities());
-//        //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 3);
-
-    }
+//    @Before
+//    public void start() {
+//        FirefoxOptions options = new FirefoxOptions().setLegacy(true);
+//        options.setBinary(new FirefoxBinary(new File("C:\\Program Files\\Mozilla Firefox ESR\\firefox.exe")));
+//        WebDriver driver = new FirefoxDriver(options);
+//        wait = new WebDriverWait(driver, 3);
+//    }
 
     @Test
     public void myFirstTest() {
@@ -52,9 +42,9 @@ public class MyFirstTest {
         wait.until(titleIs("webdriver - Поиск в Google"));
     }
 
-    @After
-    public void stop() {
-        driver.quit();
-        driver = null;
-    }
+//    @After
+//    public void stop() {
+//        driver.quit();
+//        driver = null;
+//    }
 }
