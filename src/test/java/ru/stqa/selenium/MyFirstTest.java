@@ -38,7 +38,7 @@ public class MyFirstTest extends TestBase {
     public void myFirstTest() {
         driver.get("https://www.google.com/");
         driver.findElement(By.name("q")).sendKeys("webdriver");
-        driver.findElement(By.name("btnK")).click();
+        driver.findElement(By.name("_btnK")).click();
         wait.until(titleIs("webdriver - Поиск в Google"));
     }
 
