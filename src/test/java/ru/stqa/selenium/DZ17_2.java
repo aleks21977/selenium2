@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DZ17_2 extends TestBase {
 
-    public ArrayList<String> allCategoryIds;
+    public ArrayList<String> allCategoryIds = new ArrayList<String>();
 
     @Test
     public void dz17_2Test() {
@@ -23,7 +23,7 @@ public class DZ17_2 extends TestBase {
         driver.findElement(By.name("login")).click();
         driver.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=0/");
 
-        ArrayList<String> allCategoryIds = new ArrayList<String>();
+        //ArrayList<String> allCategoryIds = new ArrayList<String>();
 
         checkIncludeCategories();         //******************проверка есть ли вложенные подкатегории
 
@@ -38,17 +38,20 @@ public class DZ17_2 extends TestBase {
 
     public void checkIncludeCategories() {
         //******************проверка есть ли вложенные подкатегории
+        try { Thread.sleep(1000); } catch (Exception e) { }//пауза
         if (areElementsPresent(By.xpath("//table[@class='dataTable']//td[3]/a[@href[contains(.,'catalog&category_id')]]"))) {
             //****************получаем все подкатегории
             List<WebElement> countSubCategories = driver.findElements
                     (By.xpath("//table[@class='dataTable']//td[3]/a[@href[contains(.,'catalog&category_id')]]"));
             //************получаем у всех подкатегорий id
             //ArrayList<String> categoryIds = new ArrayList<String>();
+            try { Thread.sleep(1000); } catch (Exception e) { }//пауза
             for (WebElement subCategory : countSubCategories) {
                 String hrefCategory = subCategory.getAttribute("href");
-
+                try { Thread.sleep(1000); } catch (Exception e) { }//пауза
                 //проверяем есть ли категория в массиве и если нет то добавляем ее в массив
                 String getId = substringAfter(hrefCategory, "catalog&category_id=");
+                try { Thread.sleep(1000); } catch (Exception e) { }//пауза
                 if (checkIsContainsId(allCategoryIds, getId)) {
                     allCategoryIds.add(getId);
                 }

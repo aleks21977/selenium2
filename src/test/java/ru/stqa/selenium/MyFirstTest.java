@@ -2,6 +2,7 @@ package ru.stqa.selenium;
 
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -12,12 +13,15 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.stalenessOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 
@@ -35,11 +39,24 @@ public class MyFirstTest extends TestBase {
 //    }
 
     @Test
+    public void getBrowserLogs() {
+        driver.get("https://www.google.ru/");
+        //System.out.println(driver.manage().logs().getAvailableLogTypes());
+        driver.manage().logs().get("browser").forEach(l -> System.out.println(l));
+        List haveLogsString = driver.manage().logs().get("browser").getAll();
+        //LogEntries haveLogs = driver.manage().logs().get("performance");
+        //System.out.println("haveLogs");
+        System.out.println(haveLogsString);
+        //Assert.assertTrue(haveLogs != null);
+    }
+
+    @Test
     public void myFirstTest() {
         driver.get("https://www.google.com/");
         driver.findElement(By.name("q")).sendKeys("webdriver");
         driver.findElement(By.name("_btnK")).click();
         wait.until(titleIs("webdriver - Поиск в Google"));
+
     }
 
 //    @After
