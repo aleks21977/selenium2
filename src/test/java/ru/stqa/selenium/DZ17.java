@@ -21,9 +21,11 @@ public class DZ17 extends TestBase {
         driver.findElement(By.name("password")).sendKeys("admin");
         driver.findElement(By.name("login")).click();
         driver.get("http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=0/");
-        clickGoods("0"); //прокликивам все товары подкатегории
 
         ArrayList<String> firstCategoryIds = new ArrayList<String>();
+
+        //**************прокликивам все товары Root категории
+        clickGoods("0");
 
         //******************проверка есть ли вложенные подкатегории
         checkIncludeCategories();
@@ -31,21 +33,6 @@ public class DZ17 extends TestBase {
         //*************прокликиваем подкатегории
         klickCategories(firstCategoryIds);
     }
-
-
-    private void klickCategories(ArrayList<String> firstCategoryIds) {
-
-        //*************прокликиваем подкатегории
-        for (String categoryId : firstCategoryIds) {
-            try { Thread.sleep(1000); } catch (Exception e) { }//пауза
-            driver.findElement(By.xpath("//a[@href[contains(.,'catalog&category_id=" + categoryId + "')]]")).click();
-
-            clickGoods(categoryId); //прокликивам все товары подкатегории
-
-            checkIncludeCategories(); //проверка есть ли вложенные подкатегории
-        }
-    }
-
 
     private void clickGoods(String categoryId) {
         //*****************получаем список всех товаров подкатегории
@@ -65,12 +52,26 @@ public class DZ17 extends TestBase {
             driver.findElement(By.xpath("//a[@href[contains(.,'category_id=" + categoryId + "&product_id=" + goodsId + "')]]")).click();
             try { Thread.sleep(1900); } catch (Exception e) { }//пауза
 
-            //***********проверяем что на консоль ничего не выодится
+            //***********проверяем что на консоль ничего не выводится
             driver.manage().logs().get("browser").forEach(l -> System.out.println(l));
             List haveLogsString = driver.manage().logs().get("browser").getAll();
             System.out.println("haveLogsString=" + haveLogsString);
             assertTrue(haveLogsString.size() == 0);
             driver.findElement(By.name("cancel")).click();
+        }
+    }
+
+
+    private void klickCategories(ArrayList<String> firstCategoryIds) {
+
+        //*************прокликиваем подкатегории
+        for (String categoryId : firstCategoryIds) {
+            try { Thread.sleep(1000); } catch (Exception e) { }//пауза
+            driver.findElement(By.xpath("//a[@href[contains(.,'catalog&category_id=" + categoryId + "')]]")).click();
+
+            clickGoods(categoryId); //прокликивам все товары подкатегории
+
+            checkIncludeCategories(); //проверка есть ли вложенные подкатегории
         }
     }
 
@@ -103,7 +104,7 @@ public class DZ17 extends TestBase {
     }
 
 
-    //проверка есть ли id в массиве
+    //проверка есть ли id в массиве allCategoryIds
     public boolean checkIsContainsId(ArrayList<String> allCategoryIds, String Id) {
         if (allCategoryIds.contains(Id)) {
             return false;
