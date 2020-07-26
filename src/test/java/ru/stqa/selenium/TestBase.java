@@ -1,6 +1,9 @@
 package ru.stqa.selenium;
 
 import com.google.common.io.Files;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.client.ClientUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.*;
@@ -24,6 +27,7 @@ public class TestBase {
     public EventFiringWebDriver driver;
     public WebDriverWait wait;
     public int waitTime = 3;
+    public BrowserMobProxy proxy;
 
     public static class MyListener extends AbstractWebDriverEventListener {
         @Override
@@ -52,20 +56,42 @@ public class TestBase {
 
     @Before
     public void start() {
-        ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("w3c", false);
 
-        DesiredCapabilities cap = DesiredCapabilities.chrome();
+//        //это что то связанное с многопоточностью взял из видео selenium3_l10_m7_proxy
+//        if (tlDriver.get() != null) {
+//            driver = tlDriver.get();
+//            wait = new WebDriverWait(driver, 10);
+//            return;
+//        }
+
+
+        proxy = new BrowserMobProxyServer();
+        proxy.start(0);
+        Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);// get the Selenium proxy object
+        DesiredCapabilities capabilities = new DesiredCapabilities();// configure it as a desired capability
+        capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
+
+        //ChromeOptions options = new ChromeOptions();
+        //options.setExperimentalOption("w3c", false);
+
+        //DesiredCapabilities cap = DesiredCapabilities.chrome();
+
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
-        cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-        options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+        //cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+        //options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-        driver = new EventFiringWebDriver(new ChromeDriver(options));
+        driver = new EventFiringWebDriver(new ChromeDriver(capabilities)); //сначала было cap, затем options, теперь capabilities
+        // на мой вопрос - cap вообще нужен если options в этой строке только прописан? driver = new EventFiringWebDriver(new ChromeDriver(options));
+        // был ответ - не нужен, ChromeOptions его заменяет. это подкласс, он тоже реализует интерфейс Capabilities, но добавляет ряд возможностей, специфичных для Chrome
         driver.register(new MyListener());
         driver.manage().timeouts().implicitlyWait(waitTime, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, waitTime);
+
+//        //это что то связанное с многопоточностью взял из видео selenium3_l10_m7_proxy
+//        Runtime.getRuntime().addShutdownHook(
+//                new Thread(() -> { driver.quit(); driver = null; }));
     }
 
 

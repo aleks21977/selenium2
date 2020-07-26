@@ -16,4 +16,7 @@ dependencies {
     testCompile 'org.seleniumhq.selenium:selenium-java:3.141.59'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'mysql:mysql-connector-java:8.0.20'
+    compile ('net.lightbody.bmp:browsermob-core:2.1.5') {
+        exclude module: 'selenium'
+    }
 }
