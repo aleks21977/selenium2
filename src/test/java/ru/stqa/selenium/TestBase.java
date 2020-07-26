@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -69,6 +70,21 @@ public class TestBase {
         proxy.start(0);
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);// get the Selenium proxy object
         DesiredCapabilities capabilities = new DesiredCapabilities();// configure it as a desired capability
+
+
+
+
+
+
+        Proxy proxy = new Proxy();
+        proxy.setHttpProxy("localhost:8888");
+//        DesiredCapabilities caps = new DesiredCapabilities();
+//        caps.setCapability("proxy", proxy);
+//        WebDriver driver = new ChromeDriver(caps);
+        FirefoxOptions options = new FirefoxOptions()
+                .addPreference("network.proxy.allow_hijacking_localhost", true)
+                .setProxy(proxy);
+
         capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
         //ChromeOptions options = new ChromeOptions();
