@@ -27,7 +27,7 @@ public class MyFirstTest extends TestBase {
     @Test
     public void getBrowserLogsWithProxy() {
         proxy.newHar();
-        driver.get("http://selenium2.ru");
+        driver.get("https://webdriver.ru/");
         Har har = proxy.endHar();
         har.getLog().getEntries().forEach
                 (l -> System.out.println(l.getResponse().getStatus() + ":" + l.getRequest().getUrl()));

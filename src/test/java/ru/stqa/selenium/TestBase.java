@@ -7,8 +7,7 @@ import net.lightbody.bmp.client.ClientUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -98,9 +97,7 @@ public class TestBase {
         //cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
         //options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-        driver = new EventFiringWebDriver(new ChromeDriver(capabilities)); //сначала было cap, затем options, теперь capabilities
-        // на мой вопрос - cap вообще нужен если options в этой строке только прописан? driver = new EventFiringWebDriver(new ChromeDriver(options));
-        // был ответ - не нужен, ChromeOptions его заменяет. это подкласс, он тоже реализует интерфейс Capabilities, но добавляет ряд возможностей, специфичных для Chrome
+        driver = new EventFiringWebDriver(new FirefoxDriver(options));
         driver.register(new MyListener());
         driver.manage().timeouts().implicitlyWait(waitTime, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, waitTime);
