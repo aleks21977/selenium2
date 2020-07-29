@@ -66,7 +66,7 @@ public class TestBase {
 
 
         proxy = new BrowserMobProxyServer();
-        proxy.start(0);
+        proxy.start();
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);// get the Selenium proxy object
         DesiredCapabilities capabilities = new DesiredCapabilities();// configure it as a desired capability
 
@@ -75,16 +75,16 @@ public class TestBase {
 
 
 
-        Proxy proxy = new Proxy();
-        proxy.setHttpProxy("localhost:8888");
+        //Proxy proxy = new Proxy();
+        //proxy.setHttpProxy("localhost:8888");
 //        DesiredCapabilities caps = new DesiredCapabilities();
 //        caps.setCapability("proxy", proxy);
 //        WebDriver driver = new ChromeDriver(caps);
         FirefoxOptions options = new FirefoxOptions()
                 .addPreference("network.proxy.allow_hijacking_localhost", true)
-                .setProxy(proxy);
+                .setProxy(seleniumProxy);
 
-        capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
+        //capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
         //ChromeOptions options = new ChromeOptions();
         //options.setExperimentalOption("w3c", false);
