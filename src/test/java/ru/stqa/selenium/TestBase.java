@@ -7,6 +7,8 @@ import net.lightbody.bmp.client.ClientUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
@@ -26,7 +28,7 @@ public class TestBase {
 
     public EventFiringWebDriver driver;
     public WebDriverWait wait;
-    public int waitTime = 3;
+    public int waitTime = 5;
     public BrowserMobProxy proxy;
 
     public static class MyListener extends AbstractWebDriverEventListener {
@@ -80,14 +82,14 @@ public class TestBase {
 //        DesiredCapabilities caps = new DesiredCapabilities();
 //        caps.setCapability("proxy", proxy);
 //        WebDriver driver = new ChromeDriver(caps);
-        FirefoxOptions options = new FirefoxOptions()
-                .addPreference("network.proxy.allow_hijacking_localhost", true)
-                .setProxy(seleniumProxy);
+//        FirefoxOptions options = new FirefoxOptions()
+//                .addPreference("network.proxy.allow_hijacking_localhost", true)
+//                .setProxy(seleniumProxy);
 
         //capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
-        //ChromeOptions options = new ChromeOptions();
-        //options.setExperimentalOption("w3c", false);
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("w3c", false);
 
         //DesiredCapabilities cap = DesiredCapabilities.chrome();
 
@@ -97,7 +99,7 @@ public class TestBase {
         //cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
         //options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-        driver = new EventFiringWebDriver(new FirefoxDriver(options));
+        driver = new EventFiringWebDriver(new ChromeDriver(options));
         driver.register(new MyListener());
         driver.manage().timeouts().implicitlyWait(waitTime, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, waitTime);
